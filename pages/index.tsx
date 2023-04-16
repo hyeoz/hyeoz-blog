@@ -1,8 +1,19 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
+import { getFile } from "../lib/post";
 
-function HomePage() {
+export async function getStaticProps() {
+  const posts = await getFile();
+
+  return {
+    props: { posts },
+  };
+}
+
+function HomePage(props) {
+  console.log("=====> HOME PAGE", props);
+  const { posts } = props;
   return (
     <>
       <Head>
@@ -12,9 +23,11 @@ function HomePage() {
       <main>
         <h1>My Blog</h1>
         <ul>
-          <li>
-            <Link href="/post/first-post">First Post</Link>
-          </li>
+          {posts.map((post) => (
+            <li key={post.title}>
+              <Link href={`/post/${post.path}`}>{post.title}</Link>
+            </li>
+          ))}
         </ul>
       </main>
     </>
