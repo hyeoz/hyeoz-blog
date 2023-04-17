@@ -1,9 +1,19 @@
+/* LIGHT THEME */
+:root {
+  /* --를 앞에 붙여 변수처럼 사용 가능 */
+  --background-color: white;
+  --text-color: black;
+  --link-color: darkred;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 a {
-  color: darkred;
+  color: var(--link-color);
   text-decoration: none;
 }
 a:focus,
