@@ -1,23 +1,19 @@
-// SSR with Incremental Static Regeneration (getServerSideProps)
+// CSR with Internal API routes
 import Title from "@/components/Title";
 import { ProductType, getProducts } from "@/lib/api";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-export async function getServerSideProps() {
-  console.log("[SERVER] getStaticProps Called");
-  const products = await getProducts();
-  return {
-    props: { products },
-  };
-}
+export default function HomePage(): React.ReactElement {
+  const [products, setProducts] = useState<ProductType[]>([]);
 
-export default function HomePage({
-  products,
-}: {
-  products: ProductType[];
-}): React.ReactElement {
-  console.log(products);
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("/api/products");
+      const products = await res.json();
+      setProducts(products);
+    })();
+  }, []);
 
   return (
     <>
