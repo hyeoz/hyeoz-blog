@@ -44,6 +44,21 @@ export type ProductType = {
 
 export const getProducts = async () => {
   const res = await fetch(`http://localhost:1337/products`);
-  const products = await res.json();
-  return products;
+  const products: ProductType[] = await res.json();
+  return products.map((r) => {
+    return {
+      id: r.id,
+      title: r.title,
+    };
+  });
+};
+
+export const getProductDetail = async (id: string) => {
+  const res = await fetch(`http://localhost:1337/products/${id}`);
+  const product = await res.json();
+  return {
+    id: product.id,
+    title: product.title,
+    description: product.description,
+  };
 };

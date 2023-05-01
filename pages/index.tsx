@@ -1,20 +1,20 @@
-// CSR with Internal API routes
+// In this case, we choose Incremental Static Regeneration
 import Title from "@/components/Title";
 import { ProductType, getProducts } from "@/lib/api";
 import Head from "next/head";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-export default function HomePage(): React.ReactElement {
-  const [products, setProducts] = useState<ProductType[]>([]);
+export async function getStaticProps() {
+  const products = await getProducts();
+  return { props: { products }, revalidate: 5 * 60 };
+}
 
-  useEffect(() => {
-    (async () => {
-      const res = await fetch("/api/products");
-      const products = await res.json();
-      setProducts(products);
-    })();
-  }, []);
-
+export default function HomePage({
+  products,
+}: {
+  products: { id: number; title: string }[];
+}): React.ReactElement {
   return (
     <>
       <Head>Next Shop</Head>
@@ -22,7 +22,9 @@ export default function HomePage(): React.ReactElement {
         <Title>Next Shop</Title>
         <ul>
           {products.map((product) => (
-            <li key={product.id}>{product.title}</li>
+            <li key={product.id}>
+              <Link href={`/products/${product.id}`}>{product.title}</Link>
+            </li>
           ))}
         </ul>
       </main>
