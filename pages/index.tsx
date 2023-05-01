@@ -1,15 +1,14 @@
-// SSR with Incremental Static Regeneration
+// SSR with Incremental Static Regeneration (getServerSideProps)
 import Title from "@/components/Title";
 import { ProductType, getProducts } from "@/lib/api";
 import Head from "next/head";
 import React from "react";
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   console.log("[SERVER] getStaticProps Called");
   const products = await getProducts();
   return {
     props: { products },
-    revalidate: 30, // seconds
   };
 }
 
