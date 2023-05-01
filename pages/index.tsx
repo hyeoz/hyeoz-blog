@@ -1,13 +1,23 @@
+// SSR with Incremental Static Regeneration
 import Title from "@/components/Title";
+import { ProductType, getProducts } from "@/lib/api";
 import Head from "next/head";
 import React from "react";
 
-const products = [
-  { id: 1, title: "First Product" },
-  { id: 2, title: "Second Product" },
-];
+export async function getStaticProps() {
+  console.log("[SERVER] getStaticProps Called");
+  const products = await getProducts();
+  return {
+    props: { products },
+    revalidate: 30, // seconds
+  };
+}
 
-export default function HomePage(): React.ReactElement {
+export default function HomePage({
+  products,
+}: {
+  products: ProductType[];
+}): React.ReactElement {
   console.log(products);
 
   return (
