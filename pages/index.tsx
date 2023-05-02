@@ -7,7 +7,10 @@ import React, { useEffect, useState } from "react";
 
 export async function getStaticProps() {
   const products = await getProducts();
-  return { props: { products }, revalidate: 5 * 60 };
+  return {
+    props: { products },
+    revalidate: parseInt(process.env.REVALIDATE_SECOND!),
+  };
 }
 
 export default function HomePage({

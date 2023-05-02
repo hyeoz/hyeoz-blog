@@ -42,10 +42,32 @@ export type ProductType = {
   updated_at: string;
 };
 
+const CMS_URL = process.env.CMS_URL;
+
+export class ApiError extends Error {
+  status: number;
+  constructor(url: string, status: number) {
+    super(`❌${url} ${status}`);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ApiError);
+    }
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
+async function fetchJson(url: string) {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new ApiError(url, res.status);
+  }
+  return await res.json();
+}
+
 export const getProducts = async () => {
-  const res = await fetch(`http://localhost:1337/products`);
-  const products: ProductType[] = await res.json();
-  return products.map((r) => {
+  const products = await fetchJson(`${CMS_URL}/products`);
+
+  return products.map((r: ProductType) => {
     return {
       id: r.id,
       title: r.title,
@@ -54,8 +76,8 @@ export const getProducts = async () => {
 };
 
 export const getProductDetail = async (id: string) => {
-  const res = await fetch(`http://localhost:1337/products/${id}`);
-  const product = await res.json();
+  const product = await fetchJson(`${CMS_URL}/products/${id}`);
+
   return {
     id: product.id,
     title: product.title,
