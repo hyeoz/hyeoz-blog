@@ -6,6 +6,7 @@ import {
   getProducts,
 } from "@/lib/api";
 import Head from "next/head";
+import Image from "next/image";
 
 export async function getStaticPaths() {
   const products = await getProducts();
@@ -19,8 +20,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }: { params: { id: string } }) {
-  console.log(params, "===>CONTEXT");
-
   try {
     const product = await getProductDetail(params.id);
 
@@ -37,16 +36,31 @@ export async function getStaticProps({ params }: { params: { id: string } }) {
 export default function ProductDetail({
   product,
 }: {
-  product: { id: number; title: string; description: string };
+  product: {
+    id: number;
+    title: string;
+    description: string;
+    pictureUrl: string;
+    price: number;
+  };
 }) {
-  console.log(product, "=====> PRODUCT");
-
   return (
     <>
       <Head>Products</Head>
       <main className="px-6 py-4">
         <Title>{product.title}</Title>
-        <p>{product.description}</p>
+        <div className="flex flex-col lg:gap-4 lg:flex-row">
+          <Image
+            src={product.pictureUrl}
+            width={640}
+            height={480}
+            alt="detail"
+          />
+          <div className="flex-1">
+            <p className="text-sm">{product.description}</p>
+            <p className="mt-2 text-lg font-bold">${product.price}</p>
+          </div>
+        </div>
       </main>
     </>
   );

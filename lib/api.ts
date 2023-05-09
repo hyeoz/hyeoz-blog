@@ -71,6 +71,8 @@ export const getProducts = async () => {
     return {
       id: r.id,
       title: r.title,
+      price: r.price,
+      pictureUrl: CMS_URL + r.picture.url,
     };
   });
 };
@@ -82,5 +84,7 @@ export const getProductDetail = async (id: string) => {
     id: product.id,
     title: product.title,
     description: product.description,
+    pictureUrl: CMS_URL + product.picture.url,
+    price: product.price,
   };
 };
