@@ -1,10 +1,8 @@
 // In this case, we choose Incremental Static Regeneration
+import React from "react";
+import Layout from "@/components/Layout";
 import ProductCard from "@/components/ProductCard";
-import Title from "@/components/Title";
 import { ProductType, getProducts } from "@/lib/api";
-import Head from "next/head";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
 
 export type ProductPropsType = {
   id: number;
@@ -27,18 +25,14 @@ export default function HomePage({
   products: ProductPropsType[];
 }): React.ReactElement {
   return (
-    <>
-      <Head>Next Shop</Head>
-      <main className="px-6 py-4">
-        <Title>Next Shop</Title>
-        <ul className="grid grid-cols-1 gap-4 lg:grid-cols-3 ">
-          {products.map((product) => (
-            <li key={product.id}>
-              <ProductCard product={product} />
-            </li>
-          ))}
-        </ul>
-      </main>
-    </>
+    <Layout title="Indoor Plants">
+      <ul className="grid grid-cols-1 gap-4 lg:grid-cols-3 ">
+        {products.map((product) => (
+          <li key={product.id}>
+            <ProductCard product={product} />
+          </li>
+        ))}
+      </ul>
+    </Layout>
   );
 }
