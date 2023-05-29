@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Title from "./Title";
+import NavBar from "./NavBar";
 
 export default function Layout({
   title,
@@ -11,6 +12,9 @@ export default function Layout({
   return (
     <>
       <Head>{title} - Next Shop</Head>
+      <header>
+        <NavBar />
+      </header>
       <main className="px-6 py-4">
         <Title>{title}</Title>
         {children}
