@@ -1,10 +1,13 @@
+import { useRouter } from "next/router";
+import { FormEvent, useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
+
 import Button from "@/components/Button";
 import Field from "@/components/Field";
 import Input from "@/components/Input";
 import Layout from "@/components/Layout";
 import { fetchJson } from "@/lib/api";
-import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { useSignIn } from "@/hooks/user";
 
 // 개발버전에서 시간 지연을 위한 함수
 function sleep(ms: number) {
@@ -16,46 +19,16 @@ export default function SignIn() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState({
-    loading: false,
-    error: false,
-  });
+
+  const { mutation, onSuccessSignIn } = useSignIn();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus({
-      ...status,
-      loading: true,
-    });
+    const valid = await onSuccessSignIn(email, password);
 
-    try {
-      await fetchJson(`/api/login`, {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      setStatus({
-        ...status,
-        error: false,
-      });
-
+    if (valid) {
       router.push("/");
-    } catch (error) {
-      console.log("ERROR", error);
-      setStatus({
-        ...status,
-        error: false,
-      });
     }
-
-    setStatus({
-      ...status,
-      loading: false,
-    });
   };
 
   return (
@@ -77,8 +50,8 @@ export default function SignIn() {
             required
           />
         </Field>
-        {status.error && <p className="text-red-700">Invalid Password!</p>}
-        <Button type="submit" disabled={status.loading}>
+        {mutation.isError && <p className="text-red-700">Invalid Password!</p>}
+        <Button type="submit" disabled={mutation.isLoading}>
           Sign In
         </Button>
       </form>
