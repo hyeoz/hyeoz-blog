@@ -1,4 +1,6 @@
+import AddToCardWidget from "@/components/AddToCardWidget";
 import Title from "@/components/Title";
+import { useUser } from "@/hooks/user";
 import {
   ApiError,
   ProductType,
@@ -44,6 +46,8 @@ export default function ProductDetail({
     price: number;
   };
 }) {
+  const user = useUser();
+
   return (
     <>
       <Head>Products</Head>
@@ -58,7 +62,8 @@ export default function ProductDetail({
           />
           <div className="flex-1">
             <p className="text-sm">{product.description}</p>
-            <p className="mt-2 text-lg font-bold">${product.price}</p>
+            <p className="mt-2 text-lg font-bold mb-4">${product.price}</p>
+            {!!user && <AddToCardWidget productId={product.id} />}
           </div>
         </div>
       </main>
