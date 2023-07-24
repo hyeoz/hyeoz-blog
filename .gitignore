@@ -2,3 +2,4 @@
 /node_modules/
 /next-end.d.ts/
 /package-lock.json/
+/dist

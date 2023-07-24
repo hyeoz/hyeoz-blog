@@ -1,15 +1,6 @@
 import React from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { getFile } from "../lib/post";
-
-export async function getStaticProps() {
-  const posts = await getFile();
-
-  return {
-    props: { posts },
-  };
-}
 
 function HomePage(props) {
   console.log("=====> HOME PAGE", props);
