@@ -1,5 +1,5 @@
 /.next/
-/node_modules/
-/next-end.d.ts/
-/package-lock.json/
+node_modules/
+next-end.d.ts/
+/package-lock.json
 /dist
