@@ -1,5 +1,5 @@
 import Head from "next/head";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/common/Header";
 import "../styles/global.css";
 import "../styles/tailwind.css";
 
