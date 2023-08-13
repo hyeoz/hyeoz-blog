@@ -4,10 +4,26 @@ import Link from "next/link";
 import SubTab from "../components/common/SubTab";
 import Instagram from "../components/main/Instagram";
 import VIsitors from "../components/main/VIsitors";
-
+import { fetcher } from "../lib/api";
 // TODO 메인 - 블로그 페이지
 
-function HomePage() {
+export async function getStaticProps() {
+  const { data } = await fetcher(
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/reviews`
+  );
+  // console.log("GET STATIC PROP", data);
+
+  // TODO test
+  return {
+    props: {
+      reviews: data,
+    },
+  };
+}
+
+function HomePage({ reviews }) {
+  console.log("FRONT", reviews);
+
   return (
     <>
       <Head>
